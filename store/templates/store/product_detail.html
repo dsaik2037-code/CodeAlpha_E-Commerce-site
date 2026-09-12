@@ -1,0 +1,77 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.name }} - SmartShop</title>
+
+    <link rel="stylesheet" href="{% static 'store/style.css' %}">
+</head>
+
+<body>
+
+    <nav>
+    <h1>🛒 SmartShop</h1>
+
+    <div class="nav-menu">
+
+        <a href="{% url 'product_list' %}" class="home-btn">
+            🏠 Home
+        </a>
+
+        <a href="{% url 'cart' %}" class="cart-btn">
+            🛒 Cart
+        </a>
+
+        {% if user.is_authenticated %}
+
+            <span class="welcome-user">
+                👋 Welcome, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                🚪 Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}" class="login-btn">
+                🔐 Login
+            </a>
+
+            <a href="{% url 'register' %}" class="register-btn">
+                📝 Register
+            </a>
+
+        {% endif %}
+
+    </div>
+    </nav>
+
+    <div class="container">
+
+        <h1>{{ product.name }}</h1>
+
+        {% if product.image %}
+            <img src="{{ product.image.url }}"
+                 alt="{{ product.name }}"
+                 width="300">
+        {% endif %}
+
+        <h2>₹{{ product.price }}</h2>
+        <a href="{% url 'add_to_cart' product.id %}">
+           <button>Add to Cart</button>
+        </a>
+
+        <p>{{ product.description }}</p>
+
+        <br>
+
+        <a href="{% url 'product_list' %}">
+            ← Back to Products
+        </a>
+
+    </div>
+
+</body>
+</html>

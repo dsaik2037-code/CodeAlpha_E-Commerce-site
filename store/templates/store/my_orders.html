@@ -1,0 +1,112 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Orders - SmartShop</title>
+    <link rel="stylesheet" href="{% static 'store/style.css' %}">
+</head>
+
+<body>
+
+<nav>
+    <h1>🛒 SmartShop</h1>
+
+    <div class="nav-menu">
+
+        <a href="{% url 'product_list' %}" class="home-btn">
+            🏠 Home
+        </a>
+
+        <a href="{% url 'cart' %}" class="cart-btn">
+            🛒 Cart
+        </a>
+
+        <a href="{% url 'my_orders' %}" class="login-btn">
+            📦 My Orders
+        </a>
+
+        <a href="{% url 'logout' %}" class="logout-btn">
+            🚪 Logout
+        </a>
+
+    </div>
+</nav>
+
+<div class="container">
+
+    <h1>📦 My Orders</h1>
+
+    {% if orders %}
+
+        {% for order in orders %}
+
+            <div class="cart-item">
+
+                <h3>Order #{{ order.id }}</h3>
+
+                {% for item in order.items.all %}
+
+    {% if item.product.image %}
+        <img src="{{ item.product.image.url }}"
+             alt="{{ item.product.name }}"
+             style="width:150px; height:120px; object-fit:cover; border-radius:8px;">
+    {% endif %}
+
+    <p>
+        <strong>Product:</strong> {{ item.product.name }}
+    </p>
+
+    <p>
+        <strong>Quantity:</strong> {{ item.quantity }}
+    </p>
+
+{% endfor %}
+
+                <p><strong>Name:</strong> {{ order.name }}</p>
+
+                <p><strong>Address:</strong> {{ order.address }}</p>
+
+                <p><strong>Phone:</strong> {{ order.phone }}</p>
+
+                <p class="price">
+                    Total: ₹{{ order.total }}
+                </p>
+                <p>
+    <strong>Order Status:</strong>
+
+    {% if order.status == "Pending" %}
+        <span class="status-pending">🟡 Pending</span>
+
+    {% elif order.status == "Processing" %}
+        <span class="status-processing">🔵 Processing</span>
+
+    {% elif order.status == "Delivered" %}
+        <span class="status-delivered">🟢 Delivered</span>
+
+    {% elif order.status == "Cancelled" %}
+        <span class="status-cancelled">🔴 Cancelled</span>
+
+    {% endif %}
+</p>
+
+                <p>
+                    Order Date: {{ order.created_at }}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="cart-item">
+            <p>You have not placed any orders yet.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

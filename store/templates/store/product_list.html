@@ -1,0 +1,95 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SmartShop</title>
+
+    <link rel="stylesheet" href="{% static 'store/style.css' %}">
+</head>
+
+<body>
+
+    <nav>
+
+    <h1>🛒 SmartShop</h1>
+
+    <div class="nav-menu">
+
+    <a href="{% url 'product_list' %}" class="home-btn">
+        🏠 Home
+    </a>
+
+    <a href="{% url 'cart' %}" class="cart-btn">
+        🛒 Cart
+    </a>
+    {% if user.is_authenticated %}
+
+    <a href="{% url 'my_orders' %}" class="orders-btn">
+        📦 My Orders
+    </a>
+
+
+    <span class="welcome-user">
+        👋 Welcome, {{ user.username }}
+    </span>
+
+    <a href="{% url 'logout' %}" class="logout-btn">
+        🚪 Logout
+    </a>
+
+{% else %}
+
+    <a href="{% url 'login' %}" class="login-btn">
+        🔐 Login
+    </a>
+
+    <a href="{% url 'register' %}" class="register-btn">
+        📝 Register
+    </a>
+
+{% endif %}
+
+</div>
+
+</nav>
+
+    <div class="container">
+
+        <h2>Our Products</h2>
+
+        <div class="products">
+
+            {% for product in products %}
+
+                <div class="product-card">
+
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% endif %}
+
+                    <h3>{{ product.name }}</h3>
+
+                    <p>{{ product.description }}</p>
+
+                    <p class="price">
+                        ₹{{ product.price }}
+                    </p>
+                    <a href="{% url 'product_detail' product.id %}">
+                        <button>View Product</button>
+                    </a>
+
+                </div>
+
+            {% empty %}
+   
+                <p>No products available.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</body>
+</html>

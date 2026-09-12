@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart - SmartShop</title>
+    <link rel="stylesheet" href="{% static 'store/style.css' %}">
+    <script src="{% static 'store/script.js' %}"></script>
+</head>
+
+<body>
+
+    <nav>
+    <h1>🛒 SmartShop</h1>
+
+    <div class="nav-menu">
+
+        <a href="{% url 'product_list' %}" class="home-btn">
+            🏠 Home
+        </a>
+
+        <a href="{% url 'cart' %}" class="cart-btn">
+            🛒 Cart
+        </a>
+
+        {% if user.is_authenticated %}
+
+            <span class="welcome-user">
+                👋 Welcome, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                🚪 Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}" class="login-btn">
+                🔐 Login
+            </a>
+
+            <a href="{% url 'register' %}" class="register-btn">
+                📝 Register
+            </a>
+
+        {% endif %}
+
+    </div>
+</nav>
+
+    <div class="container cart-container">
+
+        <h1>🛒 My Shopping Cart</h1>
+
+        {% if cart_items %}
+
+            {% for item in cart_items %}
+
+                <div class="cart-item">
+                    {% if item.product.image %}
+        <img src="{{ item.product.image.url }}"
+             alt="{{ item.product.name }}"
+             style="width:150px; height:120px; object-fit:cover; border-radius:8px;">
+    {% endif %}
+
+
+                    <h3>{{ item.product.name }}</h3>
+
+                    <p>Price: ₹{{ item.product.price }}</p>
+
+                    <div class="quantity-control">
+
+    <a href="{% url 'decrease_quantity' item.product.id %}">
+        <button type="button">-</button>
+    </a>
+
+    <span>{{ item.quantity }}</span>
+
+    <a href="{% url 'increase_quantity' item.product.id %}">
+        <button type="button">+</button>
+    </a>
+
+</div>
+
+                    <p class="price">
+                        Total: ₹{{ item.item_total }}
+                    </p>
+
+                    <a href="{% url 'remove_from_cart' item.product.id %}"
+                    onclick="return confirmRemove();">
+                        <button class="remove-btn">Remove</button>
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+            <div class="cart-total">
+                <h2>Grand Total: ₹{{ total }}</h2>
+                <a href="{% url 'checkout' %}" class="checkout-btn">
+    
+        💳 Proceed to Checkout
+</a>
+            </div>
+
+        {% else %}
+
+            <div class="cart-item">
+                <p>Your cart is empty.</p>
+            </div>
+
+        {% endif %}
+
+        <br>
+
+        <a href="{% url 'product_list' %}">
+            <button>← Continue Shopping</button>
+        </a>
+
+    </div>
+
+</body>
+</html>

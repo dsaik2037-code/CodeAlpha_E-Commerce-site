@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Successful - SmartShop</title>
+    <link rel="stylesheet" href="{% static 'store/style.css' %}">
+</head>
+
+<body>
+
+<nav>
+    <h1>🛒 SmartShop</h1>
+
+    <div class="nav-menu">
+
+        <a href="{% url 'product_list' %}" class="home-btn">
+            🏠 Home
+        </a>
+
+        <a href="{% url 'cart' %}" class="cart-btn">
+            🛒 Cart
+        </a>
+
+        <a href="{% url 'logout' %}" class="logout-btn">
+            🚪 Logout
+        </a>
+
+    </div>
+</nav>
+
+<div class="container" style="text-align: center; padding: 60px 20px;">
+
+    <h1>🎉 Order Placed Successfully!</h1>
+
+    <p>Thank you for shopping with SmartShop.</p>
+
+    <p>Your order has been received successfully.</p>
+
+    <br>
+
+    <a href="{% url 'product_list' %}">
+        <button>
+            🛍️ Continue Shopping
+        </button>
+    </a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout - SmartShop</title>
+    <link rel="stylesheet" href="{% static 'store/style.css' %}">
+</head>
+
+<body>
+
+<nav>
+    <h1>🛒 SmartShop</h1>
+
+    <div class="nav-menu">
+
+        <a href="{% url 'product_list' %}" class="home-btn">
+            🏠 Home
+        </a>
+
+        <a href="{% url 'cart' %}" class="cart-btn">
+            🛒 Cart
+        </a>
+
+        {% if user.is_authenticated %}
+
+            <span class="welcome-user">
+                👋 Welcome, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                🚪 Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}" class="login-btn">
+                🔐 Login
+            </a>
+
+            <a href="{% url 'register' %}" class="register-btn">
+                📝 Register
+            </a>
+
+        {% endif %}
+
+    </div>
+</nav>
+
+<div class="checkout-container">
+
+    <div class="checkout-box">
+
+        <h1>💳 Checkout</h1>
+
+        <p class="checkout-subtitle">
+            Enter your details to place the order
+        </p>
+
+        <div class="checkout-total">
+            <strong>Order Total: ₹{{ total }}</strong>
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <label>👤 Full Name</label>
+            <input
+                type="text"
+                name="name"
+                placeholder="Enter your full name"
+                required
+            >
+
+            <label>📍 Address</label>
+            <textarea
+                name="address"
+                placeholder="Enter your complete address"
+                required
+            ></textarea>
+
+            <label>📱 Phone Number</label>
+            <input
+                type="text"
+                name="phone"
+                placeholder="Enter your phone number"
+                required
+            >
+
+            <button type="submit" class="place-order-btn">
+                🛍️ Place Order
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>
